@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event bubbling order test</title>
+    <style>
+        .container { padding: 20px; border: 2px solid #333; }
+        .list-item { margin: 10px 0; padding: 10px; background: #f0f0f0; display: flex; justify-content: space-between; }
+        button { padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="container-root" class="container">
+        <div id="container-1" class="container">
+            <div id="container-2" class="container">
+                <div id="container-3" class="container">
+                    <div id="container-4" class="container">
+                        <span id="initiator" >Click me!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+
+</body>
+</html>

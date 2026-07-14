@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Viewport-Aware Tooltips</title>
+    <style>
+        /* Reset and ensure the body takes up the exact viewport */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { width: 100vw; height: 100vh; overflow: hidden; font-family: system-ui, sans-serif; background: #f4f4f9; }
+
+        /* A Grid layout designed to shove buttons against the exact viewport boundaries */
+        .arena {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+        }
+
+        .cell { display: flex; align-items: center; justify-content: center; }
+        .top-left { justify-content: flex-start; align-items: flex-start; }
+        .top-right { justify-content: flex-end; align-items: flex-start; }
+        .bottom-left { justify-content: flex-start; align-items: flex-end; }
+        .bottom-right { justify-content: flex-end; align-items: flex-end; }
+
+        button {
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid #333;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button:hover { background: #eef; border-color: #0066cc; }
+
+        /*
+         * THE TOOLTIM ELEMENT
+         * Uses fixed positioning so coordinates map 1:1 with getBoundingClientRect() and window.inner*
+         */
+        #tooltip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 8px 14px;
+            background: #222;
+            color: #fff;
+            font-size: 13px;
+            border-radius: 4px;
+            pointer-events: none; /* Critical: prevents the tooltip itself from triggering mouse events! */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            max-width: 250px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        #tooltip.visible { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<!-- We attach our delegated listeners to this arena container -->
+<div id="arena" class="arena">
+
+    <div class="cell top-left">
+        <button data-tooltip="Standard tooltip. Plenty of room down and right!">Top Left (Normal)</button>
+    </div>
+
+    <div class="cell"></div>
+
+    <div class="cell top-right">
+        <button data-tooltip="DANGER! If I render to the right, I will cause a horizontal scrollbar! I must flip LEFT!">Top Right (Overflow Right)</button>
+    </div>
+
+    <div class="cell"></div>
+
+    <div class="cell">
+        <button data-tooltip="I am dead center. Standard positioning is fine here.">Center Stage</button>
+    </div>
+
+    <div class="cell"></div>
+
+    <div class="cell bottom-left">
+        <button data-tooltip="Watch out below! I need to flip UPWARDS so I don't get cut off by the floor.">Bottom Left (Overflow Bottom)</button>
+    </div>
+
+    <div class="cell"></div>
+
+    <div class="cell bottom-right">
+        <button data-tooltip="THE ULTIMATE TEST: I must flip BOTH left AND upwards simultaneously!">Bottom Right (Double Flip)</button>
+    </div>
+
+</div>
+
+<!-- The single reusable tooltip DOM node -->
+<div id="tooltip"></div>
+
+<script type="module" src="./index.ts"></script>
+</body>
+</html>
