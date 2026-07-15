@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accessible Focus Trap</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; background: #f0f2f5; color: #1a1a1a; }
+
+        .background-content { margin-bottom: 20px; padding: 20px; background: white; border-radius: 8px; border: 1px solid #ccc; }
+
+        /* The Modal Overlay */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+
+        /* The Focus Trap Container */
+        .modal-card {
+            background: white; width: 100%; max-width: 450px;
+            padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        input, button, a { padding: 10px 14px; font-size: 15px; border-radius: 6px; border: 1px solid #ccc; }
+        button { cursor: pointer; background: #0066cc; color: white; font-weight: bold; border: none; }
+        button:disabled, input:disabled { background: #e0e0e0; color: #888; cursor: not-allowed; border-color: #ddd; }
+        a { color: #0066cc; font-weight: bold; text-decoration: none; align-self: flex-start; }
+
+        /* Visual indicator to clearly see where document.activeElement is right now */
+        *:focus { outline: 3px solid #ffbf47 !important; outline-offset: 2px; }
+    </style>
+</head>
+<body>
+
+<!-- BACKGROUND CONTENT (Should be unreachable while modal is open!) -->
+<div class="background-content">
+    <h3>Background Page Content</h3>
+    <p>If your focus trap works, pressing Tab should never land on these buttons:</p>
+    <div style="margin-top: 10px; display: flex; gap: 10px;">
+        <button id="bg-btn-1">Background Button 1</button>
+        <button id="bg-btn-2">Background Button 2</button>
+    </div>
+</div>
+
+<!-- THE MODAL FOCUS TRAP -->
+<div class="modal-overlay">
+    <div id="focus-trap" class="modal-card">
+        <h2>🔒 Secure Focus Trap</h2>
+        <p>Use Tab and Shift+Tab to navigate. Focus must loop endlessly inside this white card.</p>
+
+        <!-- Focusable 1 -->
+        <input type="text" placeholder="1. First Name (Starts focused)" id="first-input">
+
+        <!-- Focusable 2 -->
+        <input type="text" placeholder="2. Email Address">
+
+        <!-- TRAP: Disabled input (Must be skipped!) -->
+        <input type="text" placeholder="Disabled Input (Should be skipped)" disabled>
+
+        <!-- Focusable 3 -->
+        <a href="#" id="modal-link">3. Help Documentation Link</a>
+
+        <!-- TRAP: tabindex="-1" (Must be skipped by Tab key!) -->
+        <div tabindex="-1" style="padding: 8px; background: #fff3cd; border-radius: 4px; font-size: 13px;">
+            ⚠️ I have tabindex="-1". You should skip over me when tabbing!
+        </div>
+
+        <!-- TRAP: Disabled button (Must be skipped!) -->
+        <button disabled>Disabled Submit Button</button>
+
+        <!-- Focusable 4 & 5 -->
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <button id="close-btn" style="background: #666; flex: 1;">4. Cancel</button>
+            <button id="save-btn" style="flex: 1;">5. Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<!-- MORE BACKGROUND CONTENT -->
+<div class="background-content" style="margin-top: 20px;">
+    <button id="bg-btn-3">Background Button 3</button>
+</div>
+
+<script type="module" src="./index.ts"></script>
+</body>
+</html>
