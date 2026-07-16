@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercise 4.5: The Delegated Listbox</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; background: #f0f2f5; color: #1a1a1a; }
+
+        .listbox-container {
+            max-width: 400px; background: white; border: 2px solid #ccc;
+            border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .list-option {
+            padding: 14px 18px; border-bottom: 1px solid #eee; cursor: pointer;
+            outline: none; transition: background 0.15s ease;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .list-option:last-child { border-bottom: none; }
+
+        /* Visual states your TS must apply and remove via delegation! */
+        .list-option.focused-ring {
+            background-color: #f0f8ff; box-shadow: inset 4px 0 0 #0066cc;
+        }
+        .list-option.selected {
+            background-color: #d4edda; font-weight: bold; color: #155724;
+        }
+        .list-option.selected::after { content: "✓"; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h2>⚡ Exercise 4.5: The Delegated Listbox</h2>
+<p style="margin: 10px 0 20px; color: #555;">
+    Use Tab/Shift+Tab to navigate, press Enter/Space to select via keyboard, or click with your mouse.
+</p>
+
+<!-- THE DELEGATED CONTAINER -->
+<div id="listbox" class="listbox-container" role="listbox">
+    <div class="list-option" role="option" tabindex="0" data-id="1">1. Angular CDK</div>
+    <div class="list-option" role="option" tabindex="0" data-id="2">2. React Floating UI</div>
+    <div class="list-option" role="option" tabindex="0" data-id="3">3. Vue Teleport</div>
+    <div class="list-option" role="option" tabindex="0" data-id="4">4. Svelte Actions</div>
+</div>
+
+<script type="module" src="./index.ts"></script>
+</body>
+</html>
